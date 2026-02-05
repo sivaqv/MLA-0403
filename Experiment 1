@@ -1,0 +1,23 @@
+# Import required libraries
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+
+# Actual labels (Ground Truth)
+y_true = [1, 0, 1, 1, 0, 1, 0, 0, 1, 0]
+
+# Predicted labels
+y_pred = [1, 0, 0, 1, 0, 1, 1, 0, 1, 0]
+
+# Generate confusion matrix
+cm = confusion_matrix(y_true, y_pred)
+
+# Print confusion matrix
+print("Confusion Matrix:")
+print(cm)
+
+# Display confusion matrix graphically
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Class 0", "Class 1"])
+disp.plot(cmap=plt.cm.Blues)
+plt.title("Confusion Matrix")
+plt.show()
