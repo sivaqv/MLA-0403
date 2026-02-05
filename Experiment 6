@@ -1,0 +1,67 @@
+# Import required libraries
+from sklearn.datasets import load_wine
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score, confusion_matrix
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load Wine dataset
+wine = load_wine()
+X = wine.data
+y = wine.target
+
+# Split the dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
+
+# Feature scaling
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# -------------------------------
+# Graph 1: Accuracy vs K Value
+# -------------------------------
+k_values = range(1, 16)
+accuracy_list = []
+
+for k in k_values:
+    knn = KNeighborsClassifier(n_neighbors=k)
+    knn.fit(X_train, y_train)
+    y_pred = knn.predict(X_test)
+    accuracy_list.append(accuracy_score(y_test, y_pred))
+
+plt.figure(figsize=(7,5))
+plt.plot(k_values, accuracy_list, marker='o')
+plt.xlabel("K Value")
+plt.ylabel("Accuracy")
+plt.title("KNN Accuracy vs K Value (Wine Dataset)")
+plt.grid(True)
+plt.show()
+
+# -------------------------------
+# Best K Value
+# -------------------------------
+best_k = accuracy_list.index(max(accuracy_list)) + 1
+print("Best K Value:", best_k)
+
+# -------------------------------
+# Graph 2: Confusion Matrix
+# -------------------------------
+knn = KNeighborsClassifier(n_neighbors=best_k)
+knn.fit(X_train, y_train)
+y_pred = knn.predict(X_test)
+
+cm = confusion_matrix(y_test, y_pred)
+
+plt.figure(figsize=(6,5))
+sns.heatmap(cm, annot=True, cmap="Blues",
+            xticklabels=wine.target_names,
+            yticklabels=wine.target_names)
+plt.xlabel("Predicted Label")
+plt.ylabel("True Label")
+plt.title("Confusion Matrix - KNN (Wine Dataset)")
+plt.show()
