@@ -1,0 +1,15 @@
+# Import required library
+from sklearn.metrics import confusion_matrix
+
+# Actual class labels (Ground Truth)
+y_true = [0, 1, 0, 1, 0, 1, 1, 0]
+
+# Predicted class labels
+y_pred = [0, 1, 1, 1, 0, 0, 1, 0]
+
+# Generate confusion matrix
+cm = confusion_matrix(y_true, y_pred)
+
+# Display confusion matrix
+print("2-Class Confusion Matrix:")
+print(cm)
