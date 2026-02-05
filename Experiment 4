@@ -1,0 +1,40 @@
+# Import required libraries
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+import matplotlib.pyplot as plt
+
+# Load Iris dataset
+iris = load_iris()
+X = iris.data
+y = iris.target
+
+# Split dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
+
+# Train Decision Tree with high depth (causes overfitting)
+model = DecisionTreeClassifier(max_depth=None)
+model.fit(X_train, y_train)
+
+# Predictions
+train_pred = model.predict(X_train)
+test_pred = model.predict(X_test)
+
+# Accuracy calculation
+train_accuracy = accuracy_score(y_train, train_pred)
+test_accuracy = accuracy_score(y_test, test_pred)
+
+print("Training Accuracy:", train_accuracy)
+print("Testing Accuracy:", test_accuracy)
+
+# Plot accuracy comparison
+accuracy_values = [train_accuracy, test_accuracy]
+labels = ["Training Accuracy", "Testing Accuracy"]
+
+plt.bar(labels, accuracy_values)
+plt.title("Overfitting Analysis")
+plt.ylabel("Accuracy")
+plt.show()
